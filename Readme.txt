@@ -13,9 +13,10 @@ Version 2 use SDL 2.0 instead of SDL 1.2 in version 1.
 本程序实现了视频文件的解码和显示（支持HEVC，H.264，MPEG2等）。
 是最简单的FFmpeg视频解码方面的教程。
 通过学习本例子可以了解FFmpeg的解码流程。
-项目包含两个工程：
+项目包含3个工程：
 simplest_ffmpeg_player：标准版，FFmpeg学习的开始。
 simplest_ffmpeg_player_su：SU（SDL Update）版，加入了简单的SDL的Event。
+simplest_ffmpeg_decoder_pure：一个纯净的解码器。
 
 备注:
 标准版在播放视频的时候，画面显示使用延时40ms的方式。这么做有两个后果：
@@ -28,9 +29,10 @@ SU（SDL Update）版在视频解码的过程中，不再使用延时40ms的方式，而是创建了
 
 This software is a simplest video player based on FFmpeg.
 Suitable for beginner of FFmpeg.
-Solutions contains 2 Project:
-simplest_ffmpeg_player：Standard Version, suitable for biginner.
-simplest_ffmpeg_player_su：SU（SDL Update）Version, Add SDL Event.
+Solutions contains 3 Project:
+simplest_ffmpeg_player: Standard Version, suitable for biginner.
+simplest_ffmpeg_player_su: SU（SDL Update）Version, Add SDL Event.
+simplest_ffmpeg_decoder_pure: A pure decoder.
 
 Remark:
 Standard Version use's SDL_Delay() to control video's frame rate, it has 2
