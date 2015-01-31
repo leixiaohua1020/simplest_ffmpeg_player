@@ -7,6 +7,8 @@
 ::Communication University of China / Digital TV Technology
 ::http://blog.csdn.net/leixiaohua1020
 ::
+::VS2010 Environment
+call "D:\Program Files\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"
 ::include
 @set INCLUDE=include;%INCLUDE%;
 ::lib
