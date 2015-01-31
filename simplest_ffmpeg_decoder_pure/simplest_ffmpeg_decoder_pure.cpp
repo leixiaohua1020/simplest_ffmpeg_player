@@ -21,11 +21,13 @@
 
 #include <stdio.h>
 
+
 extern "C"
 {
 #include "libavcodec/avcodec.h"
 #include "libswscale/swscale.h"
 };
+
 
 //test different codec
 #define TEST_H264  0
@@ -53,7 +55,7 @@ int main(int argc, char* argv[])
 	int y_size;
 
 #if TEST_HEVC
-	AVCodecID codec_id=AV_CODEC_ID_HEVC;
+	enum AVCodecID codec_id=AV_CODEC_ID_HEVC;
 	char filepath_in[]="bigbuckbunny_480x272.hevc";
 #else
 	AVCodecID codec_id=AV_CODEC_ID_H264;
@@ -143,7 +145,7 @@ int main(int argc, char* argv[])
 
 			ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, &packet);
 			if (ret < 0) {
-				printf("Decode Error.(½âÂë´íÎó)\n");
+				printf("Decode Error.\n");
 				return ret;
 			}
 			if (got_picture) {
@@ -181,7 +183,7 @@ int main(int argc, char* argv[])
 	while(1){
 		ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, &packet);
 		if (ret < 0) {
-			printf("Decode Error.(½âÂë´íÎó)\n");
+			printf("Decode Error.\n");
 			return ret;
 		}
 		if (!got_picture)

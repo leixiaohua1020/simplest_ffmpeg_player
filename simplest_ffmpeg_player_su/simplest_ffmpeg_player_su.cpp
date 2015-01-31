@@ -17,18 +17,25 @@
  * 本版本中使用SDL消息机制刷新视频画面。
  * This software is a simplest video player based on FFmpeg.
  * Suitable for beginner of FFmpeg.
- * 
- * Version:2.1
- * 增加了使用SDL消息机制的项目
- * Add a Project "simplest_ffmpeg_player2_su" that use SDL Events.
  *
- * Version:2.2
- * 增加了“flush_decoder”功能，可以在av_read_frame()循环结束后，
- * 输出解码器中的最后几帧数据。
- * Add Code about "flush_decoder". It can output frames remained
- * in Codec after the loop of av_read_frame().
- *
+ * 备注:
+ * 标准版在播放视频的时候，画面显示使用延时40ms的方式。这么做有两个后果：
+ * （1）SDL弹出的窗口无法移动，一直显示是忙碌状态
+ * （2）画面显示并不是严格的40ms一帧，因为还没有考虑解码的时间。
+ * SU（SDL Update）版在视频解码的过程中，不再使用延时40ms的方式，而是创建了
+ * 一个线程，每隔40ms发送一个自定义的消息，告知主函数进行解码显示。这样做之后：
+ * （1）SDL弹出的窗口可以移动了
+ * （2）画面显示是严格的40ms一帧
+ * Remark:
+ * Standard Version use's SDL_Delay() to control video's frame rate, it has 2
+ * disadvantages:
+ * (1)SDL's Screen can't be moved and always "Busy".
+ * (2)Frame rate can't be accurate because it doesn't consider the time consumed 
+ * by avcodec_decode_video2()
+ * SU（SDL Update）Version solved 2 problems above. It create a thread to send SDL 
+ * Event every 40ms to tell the main loop to decode and show video frames.
  */
+
 #include <stdio.h>
 
 extern "C"
@@ -70,6 +77,15 @@ int main(int argc, char* argv[])
 	uint8_t *out_buffer;
 	AVPacket *packet;
 	int ret, got_picture;
+
+	//------------SDL----------------
+	int screen_w,screen_h;
+	SDL_Window *screen; 
+	SDL_Renderer* sdlRenderer;
+	SDL_Texture* sdlTexture;
+	SDL_Rect sdlRect;
+	SDL_Thread *video_tid;
+	SDL_Event event;
 
 	struct SwsContext *img_convert_ctx;
 
@@ -119,14 +135,7 @@ int main(int argc, char* argv[])
 	
 	img_convert_ctx = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt, 
 		pCodecCtx->width, pCodecCtx->height, PIX_FMT_YUV420P, SWS_BICUBIC, NULL, NULL, NULL); 
-	//------------SDL----------------
-	int screen_w=0,screen_h=0;
-	SDL_Window *screen; 
-	SDL_Renderer* sdlRenderer;
-	SDL_Texture* sdlTexture;
-	SDL_Rect sdlRect;
-	SDL_Thread *video_tid;
-	SDL_Event event;
+	
 
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER)) {  
 		printf( "Could not initialize SDL - %s\n", SDL_GetError()); 

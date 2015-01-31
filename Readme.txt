@@ -16,7 +16,7 @@ Version 2 use SDL 2.0 instead of SDL 1.2 in version 1.
 项目包含3个工程：
 simplest_ffmpeg_player：标准版，FFmpeg学习的开始。
 simplest_ffmpeg_player_su：SU（SDL Update）版，加入了简单的SDL的Event。
-simplest_ffmpeg_decoder_pure：一个纯净的解码器。
+simplest_ffmpeg_decoder_pure：一个纯净的解码器。只使用libavcodec（没有使用libavformat）。
 
 备注:
 标准版在播放视频的时候，画面显示使用延时40ms的方式。这么做有两个后果：
@@ -32,7 +32,7 @@ Suitable for beginner of FFmpeg.
 Solutions contains 3 Project:
 simplest_ffmpeg_player: Standard Version, suitable for biginner.
 simplest_ffmpeg_player_su: SU（SDL Update）Version, Add SDL Event.
-simplest_ffmpeg_decoder_pure: A pure decoder.
+simplest_ffmpeg_decoder_pure: A pure decoder. Only use libavcodec (Without libavformat).
 
 Remark:
 Standard Version use's SDL_Delay() to control video's frame rate, it has 2

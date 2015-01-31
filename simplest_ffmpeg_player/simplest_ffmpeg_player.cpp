@@ -17,18 +17,12 @@
  * This software is a simplest video player based on FFmpeg.
  * Suitable for beginner of FFmpeg.
  *
- * Version:2.1
- * 增加了使用SDL消息机制的项目
- * Add a Project "simplest_ffmpeg_player2_su" that use SDL Events.
- *
- * Version:2.2
- * 增加了“flush_decoder”功能，可以在av_read_frame()循环结束后，
- * 输出解码器中的最后几帧数据。
- * Add Code about "flush_decoder". It can output frames remained
- * in Codec after the loop of av_read_frame().
  */
 
+
+
 #include <stdio.h>
+
 
 extern "C"
 {
@@ -36,10 +30,10 @@ extern "C"
 #include "libavformat/avformat.h"
 #include "libswscale/swscale.h"
 #include "libavutil/log.h"
-	//SDL
+//SDL
 #include "sdl/SDL.h"
-
 };
+
 
 //Output YUV420P data as a file 
 #define OUTPUT_YUV420P 0
@@ -58,18 +52,25 @@ int main(int argc, char* argv[])
 	struct SwsContext *img_convert_ctx;
 
 	char filepath[]="bigbuckbunny_480x272.h265";
-	
+	//SDL---------------------------
+	int screen_w=0,screen_h=0;
+	SDL_Window *screen; 
+	SDL_Renderer* sdlRenderer;
+	SDL_Texture* sdlTexture;
+	SDL_Rect sdlRect;
+
+	FILE *fp_yuv;
 
 	av_register_all();
 	avformat_network_init();
 	pFormatCtx = avformat_alloc_context();
 
 	if(avformat_open_input(&pFormatCtx,filepath,NULL,NULL)!=0){
-		printf("Couldn't open input stream.(无法打开输入流)\n");
+		printf("Couldn't open input stream.\n");
 		return -1;
 	}
 	if(avformat_find_stream_info(pFormatCtx,NULL)<0){
-		printf("Couldn't find stream information.(无法获取流信息)\n");
+		printf("Couldn't find stream information.\n");
 		return -1;
 	}
 	videoindex=-1;
@@ -79,17 +80,17 @@ int main(int argc, char* argv[])
 			break;
 		}
 	if(videoindex==-1){
-		printf("Didn't find a video stream.(没有找到视频流)\n");
+		printf("Didn't find a video stream.\n");
 		return -1;
 	}
 	pCodecCtx=pFormatCtx->streams[videoindex]->codec;
 	pCodec=avcodec_find_decoder(pCodecCtx->codec_id);
 	if(pCodec==NULL){
-		printf("Codec not found.(没有找到解码器)\n");
+		printf("Codec not found.\n");
 		return -1;
 	}
 	if(avcodec_open2(pCodecCtx, pCodec,NULL)<0){
-		printf("Could not open codec.(无法打开解码器)\n");
+		printf("Could not open codec.\n");
 		return -1;
 	}
 	
@@ -99,23 +100,16 @@ int main(int argc, char* argv[])
 	avpicture_fill((AVPicture *)pFrameYUV, out_buffer, PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height);
 	packet=(AVPacket *)av_malloc(sizeof(AVPacket));
 	//Output Info-----------------------------
-	printf("File Information --------------------------------\n");
+	printf("--------------- File Information ----------------\n");
 	av_dump_format(pFormatCtx,0,filepath,0);
 	printf("-------------------------------------------------\n");
 	img_convert_ctx = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt, 
 		pCodecCtx->width, pCodecCtx->height, PIX_FMT_YUV420P, SWS_BICUBIC, NULL, NULL, NULL); 
 
 #if OUTPUT_YUV420P 
-    FILE *fp_yuv=fopen("output.yuv","wb+");  
+    fp_yuv=fopen("output.yuv","wb+");  
 #endif  
 	
-	//SDL---------------------------
-	int screen_w=0,screen_h=0;
-	SDL_Window *screen; 
-	SDL_Renderer* sdlRenderer;
-	SDL_Texture* sdlTexture;
-	SDL_Rect sdlRect;
-
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER)) {  
 		printf( "Could not initialize SDL - %s\n", SDL_GetError()); 
 		return -1;
@@ -148,7 +142,7 @@ int main(int argc, char* argv[])
 		if(packet->stream_index==videoindex){
 			ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
 			if(ret < 0){
-				printf("Decode Error.(解码错误)\n");
+				printf("Decode Error.\n");
 				return -1;
 			}
 			if(got_picture){
@@ -157,12 +151,20 @@ int main(int argc, char* argv[])
 				
 #if OUTPUT_YUV420P
 				y_size=pCodecCtx->width*pCodecCtx->height;  
-				fwrite(pFrameYUV->data[0],1,y_size,fp_yuv); //Y 
+				fwrite(pFrameYUV->data[0],1,y_size,fp_yuv);    //Y 
 				fwrite(pFrameYUV->data[1],1,y_size/4,fp_yuv);  //U
 				fwrite(pFrameYUV->data[2],1,y_size/4,fp_yuv);  //V
 #endif
 				//SDL---------------------------
+#if 0
 				SDL_UpdateTexture( sdlTexture, NULL, pFrameYUV->data[0], pFrameYUV->linesize[0] );  
+#else
+				SDL_UpdateYUVTexture(sdlTexture, &sdlRect,
+				pFrameYUV->data[0], pFrameYUV->linesize[0],
+				pFrameYUV->data[1], pFrameYUV->linesize[1],
+				pFrameYUV->data[2], pFrameYUV->linesize[2]);
+#endif	
+				
 				SDL_RenderClear( sdlRenderer );  
 				SDL_RenderCopy( sdlRenderer, sdlTexture,  NULL, &sdlRect);  
 				SDL_RenderPresent( sdlRenderer );  
