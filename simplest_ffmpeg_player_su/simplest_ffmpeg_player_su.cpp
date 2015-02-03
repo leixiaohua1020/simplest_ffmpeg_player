@@ -45,8 +45,6 @@ extern "C"
 #include "libswscale/swscale.h"
 	//SDL
 #include "sdl/SDL.h"
-#include "sdl/SDL_thread.h"
-
 };
 
 

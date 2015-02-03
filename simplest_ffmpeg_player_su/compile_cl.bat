@@ -1,5 +1,5 @@
-::最简单的基于FFmpeg的视频播放器 2----命令行编译
-::Simplest FFmpeg Player 2----Compile in Cmd 
+::最简单的基于FFmpeg的视频播放器2(SDL升级版)----命令行编译
+::Simplest FFmpeg Player 2(SDL Update)----Compile in Cmd 
 ::
 ::雷霄骅 Lei Xiaohua
 ::leixiaohua1020@126.com
@@ -14,7 +14,7 @@ call "D:\Program Files\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"
 ::lib
 @set LIB=lib;%LIB%
 ::compile and link
-cl simplest_ffmpeg_player.cpp /MD /link SDL2.lib SDL2main.lib avcodec.lib ^
+cl simplest_ffmpeg_player_su.cpp /MD /link SDL2.lib SDL2main.lib avcodec.lib ^
 avformat.lib avutil.lib avdevice.lib avfilter.lib postproc.lib swresample.lib swscale.lib ^
 /SUBSYSTEM:WINDOWS /OPT:NOREF
 exit

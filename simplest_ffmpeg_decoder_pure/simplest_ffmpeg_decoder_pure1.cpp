@@ -24,13 +24,13 @@
 
 extern "C"
 {
-#include "libavcodec/avcodec.h"
-#include "libswscale/swscale.h"
+#include <libavcodec/avcodec.h>
+#include <libswscale/swscale.h>
 };
 
 
 //test different codec
-#define TEST_H264  0
+#define TEST_H264  1
 #define TEST_HEVC  0
 
 int main(int argc, char* argv[])
@@ -57,12 +57,9 @@ int main(int argc, char* argv[])
 #if TEST_HEVC
 	enum AVCodecID codec_id=AV_CODEC_ID_HEVC;
 	char filepath_in[]="bigbuckbunny_480x272.hevc";
-#elif TEST_H264
+#else
 	AVCodecID codec_id=AV_CODEC_ID_H264;
 	char filepath_in[]="bigbuckbunny_480x272.h264";
-#else
-	AVCodecID codec_id=AV_CODEC_ID_MPEG2VIDEO;
-	char filepath_in[]="bigbuckbunny_480x272.m2v";
 #endif
 
 	char filepath_out[]="bigbuckbunny_480x272.yuv";
@@ -91,8 +88,8 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-    //if(pCodec->capabilities&CODEC_CAP_TRUNCATED)
-    //    pCodecCtx->flags|= CODEC_FLAG_TRUNCATED; /* we do not send complete frames */
+    if(pCodec->capabilities&CODEC_CAP_TRUNCATED)
+        pCodecCtx->flags|= CODEC_FLAG_TRUNCATED; /* we do not send complete frames */
     
     if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
         printf("Could not open codec\n");
