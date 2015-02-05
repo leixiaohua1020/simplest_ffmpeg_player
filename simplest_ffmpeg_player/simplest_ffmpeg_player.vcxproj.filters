@@ -18,7 +18,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="simplest_ffmpeg_player.c">
+    <ClCompile Include="simplest_ffmpeg_player.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -38,15 +38,31 @@
 
 #include <stdio.h>
 
+#define __STDC_CONSTANT_MACROS
+
+#ifdef _WIN32
+//Windows
 extern "C"
 {
 #include "libavcodec/avcodec.h"
 #include "libavformat/avformat.h"
 #include "libswscale/swscale.h"
-	//SDL
-#include "sdl/SDL.h"
+#include "sdl2/SDL.h"
 };
-
+#else
+//Linux...
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libswscale/swscale.h>
+#include <sdl2/SDL.h>
+#ifdef __cplusplus
+};
+#endif
+#endif
 
 //Refresh Event
 #define SFM_REFRESH_EVENT  (SDL_USEREVENT + 1)
