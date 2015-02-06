@@ -108,8 +108,8 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	
-	pFrame=avcodec_alloc_frame();
-	pFrameYUV=avcodec_alloc_frame();
+	pFrame=av_frame_alloc();
+	pFrameYUV=av_frame_alloc();
 	out_buffer=(uint8_t *)av_malloc(avpicture_get_size(PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height));
 	avpicture_fill((AVPicture *)pFrameYUV, out_buffer, PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height);
 	packet=(AVPacket *)av_malloc(sizeof(AVPacket));

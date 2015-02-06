@@ -110,11 +110,11 @@ int main(int argc, char* argv[])
 	pFormatCtx = avformat_alloc_context();
 
 	if(avformat_open_input(&pFormatCtx,filepath,NULL,NULL)!=0){
-		printf("Couldn't open input stream.(无法打开输入流)\n");
+		printf("Couldn't open input stream.\n");
 		return -1;
 	}
 	if(avformat_find_stream_info(pFormatCtx,NULL)<0){
-		printf("Couldn't find stream information.(无法获取流信息)\n");
+		printf("Couldn't find stream information.\n");
 		return -1;
 	}
 	videoindex=-1;
@@ -124,26 +124,26 @@ int main(int argc, char* argv[])
 			break;
 		}
 	if(videoindex==-1){
-		printf("Didn't find a video stream.(没有找到视频流)\n");
+		printf("Didn't find a video stream.\n");
 		return -1;
 	}
 	pCodecCtx=pFormatCtx->streams[videoindex]->codec;
 	pCodec=avcodec_find_decoder(pCodecCtx->codec_id);
 	if(pCodec==NULL){
-		printf("Codec not found.(没有找到解码器)\n");
+		printf("Codec not found.\n");
 		return -1;
 	}
 	if(avcodec_open2(pCodecCtx, pCodec,NULL)<0){
-		printf("Could not open codec.(无法打开解码器)\n");
+		printf("Could not open codec.\n");
 		return -1;
 	}
-	pFrame=avcodec_alloc_frame();
-	pFrameYUV=avcodec_alloc_frame();
+	pFrame=av_frame_alloc();
+	pFrameYUV=av_frame_alloc();
 	out_buffer=(uint8_t *)av_malloc(avpicture_get_size(PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height));
 	avpicture_fill((AVPicture *)pFrameYUV, out_buffer, PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height);
 
 	//Output Info-----------------------------
-	printf("File Information --------------------------------\n");
+	printf("---------------- File Information ---------------\n");
 	av_dump_format(pFormatCtx,0,filepath,0);
 	printf("-------------------------------------------------\n");
 	
@@ -190,7 +190,7 @@ int main(int argc, char* argv[])
 				if(packet->stream_index==videoindex){
 					ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
 					if(ret < 0){
-						printf("Decode Error.(解码错误)\n");
+						printf("Decode Error.\n");
 						return -1;
 					}
 					if(got_picture){

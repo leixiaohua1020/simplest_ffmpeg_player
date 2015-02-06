@@ -159,7 +159,7 @@ int main(int argc, char* argv[])
 				default: printf("Type: Other\t");break;
 			}
 			printf("Output Number:%4d\t",pCodecParserCtx->output_picture_number);
-			printf("Offset:%8ld\n",pCodecParserCtx->cur_offset);
+			printf("Offset:%lld\n",pCodecParserCtx->cur_offset);
 
 			ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, &packet);
 			if (ret < 0) {
@@ -174,7 +174,7 @@ int main(int argc, char* argv[])
 					img_convert_ctx = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt, 
 						pCodecCtx->width, pCodecCtx->height, PIX_FMT_YUV420P, SWS_BICUBIC, NULL, NULL, NULL); 
 					
-					pFrameYUV=avcodec_alloc_frame();
+					pFrameYUV=av_frame_alloc();
 					out_buffer=(uint8_t *)av_malloc(avpicture_get_size(PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height));
 					avpicture_fill((AVPicture *)pFrameYUV, out_buffer, PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height);
 					
