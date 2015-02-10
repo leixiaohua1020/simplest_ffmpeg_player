@@ -32,7 +32,7 @@ extern "C"
 #include "libavcodec/avcodec.h"
 #include "libavformat/avformat.h"
 #include "libswscale/swscale.h"
-#include "sdl2/SDL.h"
+#include "SDL2/SDL.h"
 };
 #else
 //Linux...
@@ -43,7 +43,7 @@ extern "C"
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
-#include <sdl2/SDL.h>
+#include <SDL2/SDL.h>
 #ifdef __cplusplus
 };
 #endif
