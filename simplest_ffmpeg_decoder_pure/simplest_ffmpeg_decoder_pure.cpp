@@ -45,7 +45,7 @@ extern "C"
 
 
 //test different codec
-#define TEST_H264  0
+#define TEST_H264  1
 #define TEST_HEVC  0
 
 int main(int argc, char* argv[])

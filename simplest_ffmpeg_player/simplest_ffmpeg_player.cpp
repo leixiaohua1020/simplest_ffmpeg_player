@@ -97,6 +97,7 @@ int main(int argc, char* argv[])
 		printf("Didn't find a video stream.\n");
 		return -1;
 	}
+
 	pCodecCtx=pFormatCtx->streams[videoindex]->codec;
 	pCodec=avcodec_find_decoder(pCodecCtx->codec_id);
 	if(pCodec==NULL){

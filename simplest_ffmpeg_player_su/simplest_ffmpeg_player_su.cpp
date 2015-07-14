@@ -67,15 +67,30 @@ extern "C"
 //Refresh Event
 #define SFM_REFRESH_EVENT  (SDL_USEREVENT + 1)
 
+#define SFM_BREAK_EVENT  (SDL_USEREVENT + 2)
+
 int thread_exit=0;
+int thread_pause=0;
 
 int sfp_refresh_thread(void *opaque){
-	while (thread_exit==0) {
-		SDL_Event event;
-		event.type = SFM_REFRESH_EVENT;
-		SDL_PushEvent(&event);
+	thread_exit=0;
+	thread_pause=0;
+
+	while (!thread_exit) {
+		if(!thread_pause){
+			SDL_Event event;
+			event.type = SFM_REFRESH_EVENT;
+			SDL_PushEvent(&event);
+		}
 		SDL_Delay(40);
 	}
+	thread_exit=0;
+	thread_pause=0;
+	//Break
+	SDL_Event event;
+	event.type = SFM_BREAK_EVENT;
+	SDL_PushEvent(&event);
+
 	return 0;
 }
 
@@ -208,10 +223,14 @@ int main(int argc, char* argv[])
 			}else{
 				//Exit Thread
 				thread_exit=1;
-				break;
 			}
+		}else if(event.type==SDL_KEYDOWN){
+			//Pause
+			if(event.key.keysym.sym==SDLK_SPACE)
+				thread_pause=!thread_pause;
 		}else if(event.type==SDL_QUIT){
 			thread_exit=1;
+		}else if(event.type==SFM_BREAK_EVENT){
 			break;
 		}
 

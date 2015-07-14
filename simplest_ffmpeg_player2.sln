@@ -7,6 +7,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simplest_ffmpeg_player2_su"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simplest_ffmpeg_decoder_pure", "simplest_ffmpeg_decoder_pure\simplest_ffmpeg_decoder_pure.vcxproj", "{D9BA1D3C-ED44-41C9-8822-F4B67CF3C889}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simplest_ffmpeg_decoder", "simplest_ffmpeg_decoder\simplest_ffmpeg_decoder.vcxproj", "{E82A0C32-783C-44B3-A74D-1AB80F44A44F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simplest_video_play_sdl2", "simplest_video_play_sdl2\simplest_video_play_sdl2.vcxproj", "{268393E5-8639-47BF-A033-75D0703F04AD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simplest_ffmpeg_helloworld", "simplest_ffmpeg_helloworld\simplest_ffmpeg_helloworld.vcxproj", "{8D5A6956-DA99-4F34-A662-EA548FE0EDDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -25,6 +31,18 @@ Global
 		{D9BA1D3C-ED44-41C9-8822-F4B67CF3C889}.Debug|Win32.Build.0 = Debug|Win32
 		{D9BA1D3C-ED44-41C9-8822-F4B67CF3C889}.Release|Win32.ActiveCfg = Release|Win32
 		{D9BA1D3C-ED44-41C9-8822-F4B67CF3C889}.Release|Win32.Build.0 = Release|Win32
+		{E82A0C32-783C-44B3-A74D-1AB80F44A44F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E82A0C32-783C-44B3-A74D-1AB80F44A44F}.Debug|Win32.Build.0 = Debug|Win32
+		{E82A0C32-783C-44B3-A74D-1AB80F44A44F}.Release|Win32.ActiveCfg = Release|Win32
+		{E82A0C32-783C-44B3-A74D-1AB80F44A44F}.Release|Win32.Build.0 = Release|Win32
+		{268393E5-8639-47BF-A033-75D0703F04AD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{268393E5-8639-47BF-A033-75D0703F04AD}.Debug|Win32.Build.0 = Debug|Win32
+		{268393E5-8639-47BF-A033-75D0703F04AD}.Release|Win32.ActiveCfg = Release|Win32
+		{268393E5-8639-47BF-A033-75D0703F04AD}.Release|Win32.Build.0 = Release|Win32
+		{8D5A6956-DA99-4F34-A662-EA548FE0EDDF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8D5A6956-DA99-4F34-A662-EA548FE0EDDF}.Debug|Win32.Build.0 = Debug|Win32
+		{8D5A6956-DA99-4F34-A662-EA548FE0EDDF}.Release|Win32.ActiveCfg = Release|Win32
+		{8D5A6956-DA99-4F34-A662-EA548FE0EDDF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
