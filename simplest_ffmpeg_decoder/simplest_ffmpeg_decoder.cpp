@@ -47,8 +47,6 @@ extern "C"
 #endif
 #endif
 
-//Output YUV420P data as a file 
-#define OUTPUT_YUV420P 0
 
 int main(int argc, char* argv[])
 {
