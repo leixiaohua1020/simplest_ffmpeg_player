@@ -1,7 +1,6 @@
 Debug/
 Release/
 
-*.yuv
 *.exe
 *.obj
 *.out

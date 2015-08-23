@@ -148,8 +148,10 @@ char * avfilterinfo()
 	char info[40000] = { 0 };
 	av_register_all();
 	AVFilter *f_temp = (AVFilter *)avfilter_next(NULL);
+	
 	while (f_temp != NULL){
 		sprintf(info, "%s[%10s]\n", info, f_temp->name);
+		f_temp=f_temp->next;
 	}
 	return info;
 }

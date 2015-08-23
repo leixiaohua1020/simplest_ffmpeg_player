@@ -118,7 +118,8 @@ int main(int argc, char* argv[])
 
 	struct SwsContext *img_convert_ctx;
 
-	char filepath[]="bigbuckbunny_480x272.h265";
+	//char filepath[]="bigbuckbunny_480x272.h265";
+	char filepath[]="Titanic.ts";
 
 	av_register_all();
 	avformat_network_init();
@@ -200,30 +201,29 @@ int main(int argc, char* argv[])
 		//Wait
 		SDL_WaitEvent(&event);
 		if(event.type==SFM_REFRESH_EVENT){
-			//------------------------------
-			if(av_read_frame(pFormatCtx, packet)>=0){
-				if(packet->stream_index==videoindex){
-					ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
-					if(ret < 0){
-						printf("Decode Error.\n");
-						return -1;
-					}
-					if(got_picture){
-						sws_scale(img_convert_ctx, (const uint8_t* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pFrameYUV->data, pFrameYUV->linesize);
-						//SDL---------------------------
-						SDL_UpdateTexture( sdlTexture, NULL, pFrameYUV->data[0], pFrameYUV->linesize[0] );  
-						SDL_RenderClear( sdlRenderer );  
-						//SDL_RenderCopy( sdlRenderer, sdlTexture, &sdlRect, &sdlRect );  
-						SDL_RenderCopy( sdlRenderer, sdlTexture, NULL, NULL);  
-						SDL_RenderPresent( sdlRenderer );  
-						//SDL End-----------------------
-					}
-				}
-				av_free_packet(packet);
-			}else{
-				//Exit Thread
-				thread_exit=1;
+			while(1){
+				if(av_read_frame(pFormatCtx, packet)<0)
+					thread_exit=1;
+
+				if(packet->stream_index==videoindex)
+					break;
 			}
+			ret = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
+			if(ret < 0){
+				printf("Decode Error.\n");
+				return -1;
+			}
+			if(got_picture){
+				sws_scale(img_convert_ctx, (const uint8_t* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pFrameYUV->data, pFrameYUV->linesize);
+				//SDL---------------------------
+				SDL_UpdateTexture( sdlTexture, NULL, pFrameYUV->data[0], pFrameYUV->linesize[0] );  
+				SDL_RenderClear( sdlRenderer );  
+				//SDL_RenderCopy( sdlRenderer, sdlTexture, &sdlRect, &sdlRect );  
+				SDL_RenderCopy( sdlRenderer, sdlTexture, NULL, NULL);  
+				SDL_RenderPresent( sdlRenderer );  
+				//SDL End-----------------------
+			}
+			av_free_packet(packet);
 		}else if(event.type==SDL_KEYDOWN){
 			//Pause
 			if(event.key.keysym.sym==SDLK_SPACE)
