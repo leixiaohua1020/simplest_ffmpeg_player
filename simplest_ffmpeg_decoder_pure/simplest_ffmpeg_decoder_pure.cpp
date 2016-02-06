@@ -57,12 +57,11 @@ int main(int argc, char* argv[])
     AVFrame	*pFrame;
 	
 	const int in_buffer_size=4096;
-	uint8_t in_buffer[in_buffer_size + FF_INPUT_BUFFER_PADDING_SIZE]={0};
-	uint8_t *cur_ptr;
+	unsigned char in_buffer[in_buffer_size + FF_INPUT_BUFFER_PADDING_SIZE]={0};
+	unsigned char *cur_ptr;
 	int cur_size;
     AVPacket packet;
 	int ret, got_picture;
-	int y_size;
 
 
 #if TEST_HEVC
@@ -213,10 +212,6 @@ int main(int argc, char* argv[])
     fclose(fp_in);
 	fclose(fp_out);
 
-#if USE_SWSCALE
-	sws_freeContext(img_convert_ctx);
-	av_frame_free(&pFrameYUV);
-#endif
 
 	av_parser_close(pCodecParserCtx);
 

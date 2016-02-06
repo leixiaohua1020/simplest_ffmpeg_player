@@ -47,6 +47,7 @@ extern "C"
 #include "libavcodec/avcodec.h"
 #include "libavformat/avformat.h"
 #include "libswscale/swscale.h"
+#include "libavutil/imgutils.h"
 #include "SDL2/SDL.h"
 };
 #else
@@ -58,6 +59,7 @@ extern "C"
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
 #include <SDL2/SDL.h>
 #ifdef __cplusplus
 };
@@ -103,7 +105,7 @@ int main(int argc, char* argv[])
 	AVCodecContext	*pCodecCtx;
 	AVCodec			*pCodec;
 	AVFrame	*pFrame,*pFrameYUV;
-	uint8_t *out_buffer;
+	unsigned char *out_buffer;
 	AVPacket *packet;
 	int ret, got_picture;
 
@@ -155,8 +157,10 @@ int main(int argc, char* argv[])
 	}
 	pFrame=av_frame_alloc();
 	pFrameYUV=av_frame_alloc();
-	out_buffer=(uint8_t *)av_malloc(avpicture_get_size(PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height));
-	avpicture_fill((AVPicture *)pFrameYUV, out_buffer, PIX_FMT_YUV420P, pCodecCtx->width, pCodecCtx->height);
+
+	out_buffer=(unsigned char *)av_malloc(av_image_get_buffer_size(PIX_FMT_YUV420P,  pCodecCtx->width, pCodecCtx->height,1));
+	av_image_fill_arrays(pFrameYUV->data, pFrameYUV->linesize,out_buffer,
+		PIX_FMT_YUV420P,pCodecCtx->width, pCodecCtx->height,1);
 
 	//Output Info-----------------------------
 	printf("---------------- File Information ---------------\n");
@@ -214,7 +218,7 @@ int main(int argc, char* argv[])
 				return -1;
 			}
 			if(got_picture){
-				sws_scale(img_convert_ctx, (const uint8_t* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pFrameYUV->data, pFrameYUV->linesize);
+				sws_scale(img_convert_ctx, (const unsigned char* const*)pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pFrameYUV->data, pFrameYUV->linesize);
 				//SDL---------------------------
 				SDL_UpdateTexture( sdlTexture, NULL, pFrameYUV->data[0], pFrameYUV->linesize[0] );  
 				SDL_RenderClear( sdlRenderer );  
