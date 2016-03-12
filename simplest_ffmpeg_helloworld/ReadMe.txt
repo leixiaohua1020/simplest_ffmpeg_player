@@ -15,6 +15,7 @@ AVCodec:   FFmpeg类库支持的编解码器
 AVFilter:  FFmpeg类库支持的滤镜
 Configure: FFmpeg类库的配置信息
 
+
 This is the simplest program based on FFmpeg API. It can show following 
 informations about FFmpeg library:
 Protocol:  Protocols supported by FFmpeg.

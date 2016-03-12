@@ -7,6 +7,7 @@
  Communication University of China / Digital TV Technology
  http://blog.csdn.net/leixiaohua1020
 
+ 
  本程序使用SDL2播放RGB/YUV视频像素数据。SDL实际上是对底层绘图
  API（Direct3D，OpenGL）的封装，使用起来明显简单于直接调用底层
  API。
