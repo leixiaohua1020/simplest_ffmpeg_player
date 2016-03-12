@@ -113,9 +113,9 @@ int main(int argc, char* argv[])
 	
 	pFrame=av_frame_alloc();
 	pFrameYUV=av_frame_alloc();
-	out_buffer=(unsigned char *)av_malloc(av_image_get_buffer_size(PIX_FMT_YUV420P,  pCodecCtx->width, pCodecCtx->height,1));
+	out_buffer=(unsigned char *)av_malloc(av_image_get_buffer_size(AV_PIX_FMT_YUV420P,  pCodecCtx->width, pCodecCtx->height,1));
 	av_image_fill_arrays(pFrameYUV->data, pFrameYUV->linesize,out_buffer,
-		PIX_FMT_YUV420P,pCodecCtx->width, pCodecCtx->height,1);
+		AV_PIX_FMT_YUV420P,pCodecCtx->width, pCodecCtx->height,1);
 	
 	packet=(AVPacket *)av_malloc(sizeof(AVPacket));
 	//Output Info-----------------------------
@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
 	av_dump_format(pFormatCtx,0,filepath,0);
 	printf("-------------------------------------------------\n");
 	img_convert_ctx = sws_getContext(pCodecCtx->width, pCodecCtx->height, pCodecCtx->pix_fmt, 
-		pCodecCtx->width, pCodecCtx->height, PIX_FMT_YUV420P, SWS_BICUBIC, NULL, NULL, NULL); 
+		pCodecCtx->width, pCodecCtx->height, AV_PIX_FMT_YUV420P, SWS_BICUBIC, NULL, NULL, NULL); 
 
 #if OUTPUT_YUV420P 
     fp_yuv=fopen("output.yuv","wb+");  
